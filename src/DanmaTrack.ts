@@ -51,7 +51,6 @@ export class DanmaTrack implements IDanmaTrack {
     if (this.mTrackInfo.maxWidth < ctx.canvas.width - 10) {
       let msg = this.mDanmuPool.getMessage()
       if (msg) {
-        console.log(msg)
         this.mDanmaMessages.push(msg)
       }
     }

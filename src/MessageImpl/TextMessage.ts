@@ -3,16 +3,16 @@ import { IDanmaTrackInfo } from '../interface/IDanmaTrack'
 import { BaseMessage } from './BaseMessage'
 interface TextMessageConfig {
   mMsg: string
-  color: string
-  strokeColor: string
+  color: string // 字体颜色
+  strokeColor: string // 弹幕背景颜色
   fontSize: number
   fontFamily: string
 }
 export default class TextMessage extends BaseMessage {
   private textMessageConfig: TextMessageConfig = {
     mMsg: '',
-    color: '#FFF',
-    strokeColor: '#000',
+    color: 'black',
+    strokeColor: 'transparent',
     fontSize: 30,
     fontFamily: '黑体'
   }
@@ -45,9 +45,12 @@ export default class TextMessage extends BaseMessage {
     return this.position
   }
   onDraw(ctx: CanvasRenderingContext2D, trackInfo: IDanmaTrackInfo): void {
+    const text = this.textMessageConfig.mMsg
     ctx.fillStyle = this.textMessageConfig.strokeColor
-    ctx.strokeText(this.textMessageConfig.mMsg, this.position.left, this.position.top)
+    const { width } = ctx.measureText(text)
+    ctx.fillRect(this.position.left, this.position.top, width, this.textMessageConfig.fontSize + 2)
     ctx.fillStyle = this.textMessageConfig.color
+    ctx.textBaseline = 'top'
     ctx.fillText(this.textMessageConfig.mMsg, this.position.left, this.position.top)
   }
   onDestroyed(): boolean {

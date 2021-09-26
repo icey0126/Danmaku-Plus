@@ -7,7 +7,7 @@
     <title>demo</title>
     <style>
       canvas {
-        width: 1280px;
+        width: 422px;
         height: 720px;
         background-color: rgba(0, 0, 0, 0.2);
       }
@@ -29,31 +29,52 @@
       const { DanmakuPool, DanmaTrack, Danmaku, TextMessage, ImgMessage, GifMessage,VideoMessage } =danmakuPlus
       var canvas = document.getElementById('cav')
       var danmuku = new Danmaku(canvas, {
-        width: 1280,
+        width: 422,
         height: 720
       })
       var danmuPool = new DanmakuPool(300)
 
-      for (var i = 0; i < 6; i++) {
+      setInterval(()=>{
+        // 中途插入的弹幕不会参与到计数
+        if(danmuPool.getEnd(9)){
+          danmuPool.resetEnd();
+          console.log("!!!!");
+          var message = []
+          for (var i = 0; i < 10; i++) {
+            message.push(
+              new TextMessage({
+                mMsg: i+"条弹幕",
+                color: 'red',
+                strokeColor: 'blue',
+                fontSize: 30,
+                fontFamily: '黑体'
+              })
+            )
+          }
+          danmuPool.addMessages(message)
+        }
+      },[1000])
+
+      for (var i = 0; i < 1; i++) {
         var danmuTrack = new DanmaTrack(danmuPool, {
           top: (10 + 30) * i + 10,
           height: 30
         })
         danmuku.addDanmuTrack(danmuTrack)
       }
-      var imgDanmuPool = new DanmakuPool(10)
-      var imgDanmuTrack = new DanmaTrack(imgDanmuPool, {
-        top: 20,
-        height: 40
-      })
-      danmuku.addDanmuTrack(imgDanmuTrack)
+      // var imgDanmuPool = new DanmakuPool(10)
+      // var imgDanmuTrack = new DanmaTrack(imgDanmuPool, {
+      //   top: 20,
+      //   height: 40
+      // })
+      // danmuku.addDanmuTrack(imgDanmuTrack)
 
-      var videoDanmuPool = new DanmakuPool(10)
-      var videoDanmuTrack = new DanmaTrack(videoDanmuPool, {
-        top: 200,
-        height: 200
-      })
-      danmuku.addDanmuTrack(videoDanmuTrack)
+      // var videoDanmuPool = new DanmakuPool(10)
+      // var videoDanmuTrack = new DanmaTrack(videoDanmuPool, {
+      //   top: 200,
+      //   height: 200
+      // })
+      // danmuku.addDanmuTrack(videoDanmuTrack)
 
       danmuku.start()
       function handlePause() {
@@ -61,22 +82,43 @@
       }
       function handleStart() {
         danmuku.start()
+
+        // console.log("start", danmuPool.getMessage());
       }
+
+      setTimeout(() => {
+        danmuPool.addMessage(
+          new TextMessage({
+            mMsg: '@@@@@@@@@@@@',
+            strokeColor: 'yellow',
+            color: 'blue',
+            fontSize: 20,
+            fontFamily: '黑体'
+          })
+        );
+      }, 5000);
+
       function sendDanmu() {
         danmuPool.addMessage(
           new TextMessage({
-            mMsg: parseInt(Math.random() * 10000000) + ''
+            // mMsg: parseInt(Math.random() * 10000000) + ''
+            mMsg: "aaaaaaa"
           })
         )
+        console.log("danmuPool",danmuPool);
       }
+
+      var aaa = [
+        "aaaaaa","bbbbbbbb","ccc","DDDddddd","eeeeeeeeeeeeeeee",
+        "fffffffffffffff","gg","hhhhhhhhh","iiiiii","j"
+      ]
 
       function sendDanmuMtu() {
         var message = []
-        for (var i = 0; i < 100; i++) {
+        for (var i = 0; i < 10; i++) {
           message.push(
             new TextMessage({
-              mMsg: parseInt(Math.random() * 10000000) + '',
-              color: colorArr[Math.floor(Math.random() * colorArr.length)]
+              mMsg: aaa[i]+i,
             })
           )
         }
